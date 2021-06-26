@@ -3,18 +3,18 @@ import threading
 
 PORT = 5050
 SERVER = socket.gethostbyname(socket.gethostname())
-
+KEY = 0
 ADDR = (SERVER, PORT)
 DISCONNECT_MESSAGE = "!EXIT"
 
 FORMAT = "utf-8"
 
 server = socket.socket()
-server.bind(("", PORT))
+server.bind((SERVER, PORT))
 
 
 def Decrypt(filename, key):
-    print(type(filename))
+
     file_format = filename.strip()[-3:]
     file = open(filename, "rb")
     data = file.read()
@@ -25,8 +25,6 @@ def Decrypt(filename, key):
         data[index] = value ^ key
 
     file1 = open("decrypted_file." + file_format, "wb")
-    print("decrypted_file." + filename[-3:])
-    print(filename)
 
     file1.write(data)
     file1.close()
@@ -49,8 +47,10 @@ def handle_client(conn, addr):  # handle Individual Client
             file.write(RecvData)
             file.close()
             print(f"Encrypted File has been Received successfully as {filename}\n")
-            Decrypt(filename, 10)
+            Decrypt(filename, KEY)
             print("Decrypted File Successfully\n")
+            data_format = None
+            data_length = None
 
     conn.close()
 
@@ -66,5 +66,7 @@ def start():
         print(f"[ACTIVE CONECTIONS] {threading.active_count() - 1}")
 
 
+KEY = (int)(input("Enter key for Decrypting : "))
 print("SERVER IS STARTING")
 start()
+# UnicodeDecodeError

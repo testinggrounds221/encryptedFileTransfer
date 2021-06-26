@@ -8,9 +8,9 @@ ADDR = (SERVER, PORT)
 
 HEADER = 64
 FORMAT = "utf-8"
-DISCONNECT_MESSAGE = "!DISCONNECT"  # msg sent to server to disconnect
+DISCONNECT_MESSAGE = "!EXIT"  # msg sent to server to disconnect
 DATA_CHUNK = 64
-
+KEY = 0
 try:
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     client.connect(ADDR)
@@ -30,7 +30,7 @@ def Encrypt(filename, key):
     data = bytearray(data)
     for index, value in enumerate(data):
         data[index] = value ^ key
-    encrypted_filename = "enrypt - " + filename
+    encrypted_filename = "encrypted" + filename
     file = open(encrypted_filename, "wb")
     file.write(data)
     file.close()
@@ -39,17 +39,18 @@ def Encrypt(filename, key):
 
 def terminate_connection():
     print("Client Terminated Gracefullly !")
-    client.send(DISCONNECT_MESSAGE)
+    client.send(DISCONNECT_MESSAGE.encode(FORMAT))
     client.close()
 
 
 def sendFile(filename):
-    Encrypt(filename, 10)
-    encrypted_filename = "enrypt - " + filename
+
+    # str = unicode(str, errors='ignore')
+    encrypted_filename = Encrypt(filename, KEY)
     file = open(encrypted_filename, "rb")
     file_format = encrypted_filename[-3:]
     send_format = file_format.encode(FORMAT)
-    send_format += b" " * (HEADER - len(send_format))
+    send_format += b" " * (64 - len(send_format))
 
     SendData = file.read()
     send_data_lenght = (str)(len(SendData)).encode(FORMAT)
@@ -70,6 +71,7 @@ while True:
         if filename[-3:] not in ["jpg", "pdf", "mp3", "txt", "mp4"]:
             print("Invalid File Extension! Try Again")
             continue
+        KEY = (int)(input("Enter Key for Encrypting : "))
         sendFile(filename)
         print("Sent File Through Network Successfully")
     except KeyboardInterrupt:
@@ -80,6 +82,9 @@ while True:
         terminate_connection()
     except ConnectionRefusedError:
         print("Server is Unaivalable currently")
+    except FileNotFoundError:
+        print("File Not Found")
+
     except:
         print("Unknown Error Occured ! Try Again")
         continue
