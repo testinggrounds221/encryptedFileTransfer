@@ -3,12 +3,10 @@ import threading
 
 PORT = 5050
 SERVER = socket.gethostbyname(socket.gethostname())
-# SERVER = "49.205.86.140"
+
 ADDR = (SERVER, PORT)
 DISCONNECT_MESSAGE = "!EXIT"
 
-DATA_FORMAT = ""  # tells server how long the msg is going to be(Essentially two msgs sent for one msg by client)
-DATA_CHUNK = 64
 FORMAT = "utf-8"
 
 server = socket.socket()
@@ -54,7 +52,6 @@ def handle_client(conn, addr):  # handle Individual Client
             Decrypt(filename, 10)
             print("Decrypted File Successfully\n")
 
-            # conn.send("Message Received".encode(FORMAT))
     conn.close()
 
 

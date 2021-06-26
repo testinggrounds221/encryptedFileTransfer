@@ -2,7 +2,7 @@ import socket
 
 PORT = 5050
 SERVER = socket.gethostbyname(socket.gethostname())
-# SERVER = "49.205.86.140"
+
 
 ADDR = (SERVER, PORT)
 
@@ -59,8 +59,6 @@ def sendFile(filename):
     client.send(send_data_lenght)
     client.send(SendData)
 
-    # print(client.recv(2048).decode(FORMAT))
-
 
 print('Socket Connection Demonstration. Enter "!EXIT" to terminate connection ')
 while True:
@@ -73,6 +71,7 @@ while True:
             print("Invalid File Extension! Try Again")
             continue
         sendFile(filename)
+        print("Sent File Through Network Successfully")
     except KeyboardInterrupt:
         terminate_connection()
         break
