@@ -54,7 +54,7 @@ def sendFile(filename):
 
     SendData = file.read()
     send_data_lenght = (str)(len(SendData)).encode(FORMAT)
-    send_data_lenght += b" " * (1024 - len(send_data_lenght))
+    send_data_lenght += b" " * (102400 - len(send_data_lenght))
 
     client.send(send_format)
     client.send(send_data_lenght)

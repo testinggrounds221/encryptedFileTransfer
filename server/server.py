@@ -3,9 +3,11 @@ import threading
 
 PORT = 5050
 SERVER = socket.gethostbyname(socket.gethostname())
-KEY = 0
+
 ADDR = (SERVER, PORT)
 DISCONNECT_MESSAGE = "!EXIT"
+
+KEY = 0
 
 FORMAT = "utf-8"
 
@@ -35,12 +37,13 @@ def handle_client(conn, addr):  # handle Individual Client
     connected = True
 
     while connected:
-        data_format = conn.recv(64).decode(FORMAT)
+        data_format = conn.recv(64)
 
         if data_format:
+            data_format = data_format.decode(FORMAT)
             if data_format == DISCONNECT_MESSAGE:
                 break
-            data_length = conn.recv(1024).decode(FORMAT)
+            data_length = conn.recv(102400).decode(FORMAT)
             filename = "received_encrypted." + data_format
             file = open(filename, "wb")
             RecvData = conn.recv((int)(data_length))
