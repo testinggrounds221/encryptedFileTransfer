@@ -3,7 +3,6 @@ import socket
 PORT = 5050
 SERVER = socket.gethostbyname(socket.gethostname())
 
-
 ADDR = (SERVER, PORT)
 
 HEADER = 64
@@ -41,6 +40,7 @@ def terminate_connection():
     print("Client Terminated Gracefullly !")
     client.send(DISCONNECT_MESSAGE.encode(FORMAT))
     client.close()
+    exit()
 
 
 def sendFile(filename):
@@ -61,7 +61,8 @@ def sendFile(filename):
     client.send(SendData)
 
 
-print('Socket Connection Demonstration. Enter "!EXIT" to terminate connection ')
+print(
+    'Socket Connection Demonstration. Enter "!EXIT" to terminate connection ')
 while True:
     try:
         filename = input("Enter filename with extension:\n")
@@ -74,9 +75,11 @@ while True:
         KEY = (int)(input("Enter Key for Encrypting : "))
         sendFile(filename)
         print("Sent File Through Network Successfully")
+
     except KeyboardInterrupt:
         terminate_connection()
         break
+
     except ConnectionResetError:
         print("Server is Unaivalable currently")
         terminate_connection()
@@ -85,6 +88,6 @@ while True:
     except FileNotFoundError:
         print("File Not Found")
 
-    except:
-        print("Unknown Error Occured ! Try Again")
-        continue
+    # except:
+    #     print("Unknown Error Occured ! Try Again")
+    #     continue

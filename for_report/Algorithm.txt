@@ -1,0 +1,71 @@
+							Server-Side:
+
+1.	START
+2.	Input Encryption key as KEY
+3.	Listen for Connections
+4.	If connection from client:
+		Start a new thread
+		handleClient(address of client)
+		Go to Step 3
+5.	END
+
+handleClient(addr)
+1.	Print Client Connected from addr
+2.	Listen for incoming messages
+3.	If message:
+	1.	if message is DISCONNECT:
+		1.	Print Disconnected from addr
+		2.	Stop Current thread
+		3.	return
+	2.	recieve format of the file
+	3.	recieve length of the file
+	4.	recieve and store encrpyted file in server directory
+	5.	Print Received Encrypted file
+	6.	Decrypt(filename,KEY)
+	7.	Go to Step 2
+
+Decrypt(filename,KEY)
+1.	Get the file format from filename
+2.	read the file as bytes:
+		store contents as data
+3.	Convert data to byte array
+4.	for every byte in data:
+		store byte ^ KEY in data
+5.	write the decrypted file to disk
+6.	return
+recieve
+							Client-Side:
+1.	Connect to the server
+2.	If server Unaivalable:
+		Print Server Unaivalable
+		Go to Step 1
+3.	Get filename of the file to be sent from user
+4.	is filename DISCONNECT:
+		send DISCONNECT message to server
+		END
+5.	is filename valid:
+		Input KEY for encryption
+		sendfile(filename,KEY)
+		Print File Sent
+6.	else:
+		Print Invalid filename
+		Goto Step 3
+7.	Go to Step 3
+
+sendfile(filename,KEY)
+1.	enc_file <- Encrypt(filename,KEY)
+2.	read encfile as file:
+		send file format to Server
+		send file size to server
+		send file to server
+3.	return
+
+Encrypt(filename,KEY)
+1.	Get the file format from filename
+2.	read the file as bytes:
+		store contents as data
+3.	Convert data to byte array
+4.	for every byte in data:
+		store byte ^ KEY in data
+5.	write the encrypted file to disk as enc_file
+6.	return "enc_file"

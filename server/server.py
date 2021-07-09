@@ -33,7 +33,7 @@ def Decrypt(filename, key):
 
 
 def handle_client(conn, addr):  # handle Individual Client
-    print(f"[NEW CONNECTION] {addr} connected")
+    print(f"[NEW CONNECTION] from {addr[0]} connected at port {addr[1]}")
     connected = True
 
     while connected:
@@ -49,27 +49,30 @@ def handle_client(conn, addr):  # handle Individual Client
             RecvData = conn.recv((int)(data_length))
             file.write(RecvData)
             file.close()
-            print(f"Encrypted File has been Received successfully as {filename}\n")
+            print(f"{data_format.strip()} file Received from {addr[0]}")
             Decrypt(filename, KEY)
-            print("Decrypted File Successfully\n")
+            print("Decrypted File Successfully")
             data_format = None
             data_length = None
-
+    print(
+        f"Client from {addr[0]} connected at port {addr[1]} has been Disconnected"
+    )
     conn.close()
 
 
 def start():
     server.listen()
-    print(f"Server is UP on {SERVER}")
+    print(f"Server is running on {SERVER}")
 
     while True:
-        conn, addr = server.accept()  # conn -> connection Object, blocking point
+        conn, addr = server.accept(
+        )  # conn -> connection Object, blocking point
         thread = threading.Thread(target=handle_client, args=(conn, addr))
         thread.start()
         print(f"[ACTIVE CONECTIONS] {threading.active_count() - 1}")
 
 
 KEY = (int)(input("Enter key for Decrypting : "))
-print("SERVER IS STARTING")
+print("Starting the Server...")
 start()
 # UnicodeDecodeError
