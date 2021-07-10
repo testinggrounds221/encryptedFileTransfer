@@ -1,0 +1,13 @@
+Start in server
+Create 2 clients - to show power of threading
+
+
+
+
+
+
+
+Socket
+Threading
+Exceptions - Client, Demonstrate
+Not used cryptography as size increases

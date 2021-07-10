@@ -61,15 +61,14 @@ def sendFile(filename):
     client.send(SendData)
 
 
-print(
-    'Socket Connection Demonstration. Enter "!EXIT" to terminate connection ')
+print(f'Client connected to {ADDR} !')
 while True:
     try:
         filename = input("Enter filename with extension:\n")
         if filename == DISCONNECT_MESSAGE:
             terminate_connection()
             break
-        if filename[-3:] not in ["jpg", "pdf", "mp3", "txt", "mp4"]:
+        if filename[-3:] not in ["jpg", "pdf", "mp3", "txt", "mp4", "png"]:
             print("Invalid File Extension! Try Again")
             continue
         KEY = (int)(input("Enter Key for Encrypting : "))
@@ -87,7 +86,3 @@ while True:
         print("Server is Unaivalable currently")
     except FileNotFoundError:
         print("File Not Found")
-
-    # except:
-    #     print("Unknown Error Occured ! Try Again")
-    #     continue
